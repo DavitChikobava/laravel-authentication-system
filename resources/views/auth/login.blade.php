@@ -69,6 +69,19 @@
                         </div>
                     </div>
 
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="form-check ms-4">
+                            <input class="form-check-input" 
+                                type="checkbox" 
+                                name="remember" 
+                                id="remember" 
+                                checked>
+                            <label class="form-check-label text-secondary" for="remember">
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="d-flex flex-column align-items-center gap-3 my-4">
                         <button type="submit" 
                                 class="btn btn-lg position-relative overflow-hidden w-75 py-3 text-white fw-semibold shadow-sm"

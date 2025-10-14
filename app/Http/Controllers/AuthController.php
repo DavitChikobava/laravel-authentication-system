@@ -63,6 +63,14 @@ class AuthController extends Controller
     //     return back()->with("error", "Ivalid Email or Password");
     // }
 
+
+
+    /**
+     * Handle login attempt with email or phone
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function loginPost(Request $request)
     {
         $request->validate([
@@ -70,6 +78,7 @@ class AuthController extends Controller
             "password"=> "required"
         ]);
 
+        $remember = $request->has('remember'); // Get remember me value
         $loginField = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
         
         $credentials = [
@@ -77,7 +86,7 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if(Auth::attempt($credentials))
+        if(Auth::attempt($credentials, $remember)) // Pass remember value to attempt method
         {
             $request->session()->regenerate();
             return redirect()->route("dashboard")->with("success", "User Logged in Successfully!");
@@ -89,7 +98,7 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if(Auth::attempt($alternativeCredentials))
+        if(Auth::attempt($alternativeCredentials, $remember)) // Pass remember value here too
         {
             $request->session()->regenerate();
             return redirect()->route("dashboard")->with("success", "User Logged in Successfully!");
@@ -97,9 +106,27 @@ class AuthController extends Controller
 
         return back()->with("error", "Invalid Email/Phone or Password");
     }
+
     public function logout(Request $request)
     {
-        auth()->logout();
+        $user = Auth::user();
+        
+        if ($user) {
+            $user->update([
+                'remember_token' => null
+            ]);
+        }
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route("login");
+    }
+
+    public function __construct()
+    {
+        $this->middleware('guest')->except(['dashboard', 'logout']);
+        $this->middleware('auth')->only(['dashboard', 'logout']);
     }
 }
