@@ -17,7 +17,10 @@
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-6 col-xl-6 order-2 order-lg-1">
 
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register</p>
+                <div class="text-center mb-4 mx-1 mx-md-4 mt-4">
+                    <h1 class="fw-bold mb-0 lh-1" style="font-size: 2.1rem;">are you new</h1>
+                    <h2 class="fw-bold text-primary mt-0 lh-1" style="font-size: 2.5rem;">to our family?</h2>
+                </div>
 
                 <form class="mx-1 mx-md-4" action="{{ route('register.post') }}" method="POST">
                 @csrf
@@ -87,9 +90,35 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init 
-                                class="btn btn-primary btn-lg">Register</button>
+                    <div class="d-flex flex-column align-items-center gap-3 my-4">
+                        <button type="submit" 
+                                class="btn btn-lg position-relative overflow-hidden w-75 py-3 text-white fw-semibold shadow-sm"
+                                style="background: linear-gradient(45deg, #4e73df, #224abe); 
+                                    border: none; 
+                                    border-radius: 10px;
+                                    transition: all 0.3s ease;">
+                            <span class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Register
+                            </span>
+                        </button>
+                    </div>
+
+                    <style>
+                    .btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3) !important;
+                    }
+
+                    .btn:active {
+                        transform: translateY(0);
+                    }
+                    </style>
+
+                    <div class="text-center mb-3">
+                        <span class="text-muted">Already have an account? 
+                            <a href="{{ route('login') }}" class="text-primary text-decoration-none">Log in here!</a>
+                        </span>
                     </div>
                 </form>
 
