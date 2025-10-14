@@ -20,7 +20,11 @@ class AuthController extends Controller
         $request->validate([
             "name" => "required",
             "surname" => "required",
-            "phone" => "required",
+            "phone" => [
+                'required',
+                'unique:users,phone',
+                'regex:/^\+995[5-9][0-9]{8}$/'
+            ],
             "email"=> "required|email|unique:users",
             "password"=> [
                 'required',
@@ -30,7 +34,9 @@ class AuthController extends Controller
             ],
             "password_confirmation" => "required"
         ],[
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+            'phone.regex' => 'Phone number must be in Georgian format: +995XXXXXXXXX',
+            'phone.unique' => 'This phone number is already registered.'
         ]
     );
 

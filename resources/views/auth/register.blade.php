@@ -52,7 +52,7 @@
                             <input type="text" id="phone" name="phone" class="form-control" 
                                   placeholder="Phone Number" value="{{ old('phone') }}"/>
                             @error("phone")
-                            <span class="text-danger">{{ $message }}</span> 
+                            <span class="text-danger">{{ str_replace('phone', 'phone number', $message) }}</span> 
                             @enderror
                         </div>
                     </div>
