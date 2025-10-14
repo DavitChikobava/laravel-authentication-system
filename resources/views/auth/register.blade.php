@@ -21,70 +21,76 @@
 
                 <form class="mx-1 mx-md-4" action="{{ route('register.post') }}" method="POST">
                 @csrf
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Name"/>
-                        @error("name")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="text" id="name" name="name" class="form-control" 
+                                  placeholder="Name" value="{{ old('name') }}"/>
+                            @error("name")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="text" id="surname" name="surname" class="form-control" placeholder="Surname"/>
-                        @error("surname")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="text" id="surname" name="surname" class="form-control" 
+                                  placeholder="Surname" value="{{ old('surname') }}"/>
+                            @error("surname")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone Number"/>
-                        @error("phone")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="text" id="phone" name="phone" class="form-control" 
+                                  placeholder="Phone Number" value="{{ old('phone') }}"/>
+                            @error("phone")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="email" id="email" name="email" class="form-control" placeholder="Email"/>
-                      @error("email")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="email" id="email" name="email" class="form-control" 
+                                  placeholder="Email" value="{{ old('email') }}"/>
+                            @error("email")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
-                      @error("password")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="password" id="password" name="password" class="form-control" 
+                                  placeholder="Password"/>
+                            @error("password")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirm Password"/>
-                      @error("password_confirmation")
-                        <span class="text-danger">{{ $message }}</span> 
-                        @enderror
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <input type="password" id="password_confirmation" name="password_confirmation" 
+                                  class="form-control" placeholder="Confirm Password"/>
+                            @error("password_confirmation")
+                            <span class="text-danger">{{ $message }}</span> 
+                            @enderror
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Register</button>
-                  </div>
-
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init 
+                                class="btn btn-primary btn-lg">Register</button>
+                    </div>
                 </form>
 
               </div>
