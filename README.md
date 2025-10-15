@@ -92,7 +92,12 @@ MAIL_FROM_NAME="your-gmail-name"
 php artisan migrate
 ```
 
-9. Set proper permissions (if on Linux/Mac) / უფლებების მინიჭება (Linux/Mac სისტემებზე)
+9. Start the queue worker for mail system to work properly / Queue worker-ის გაშვება მეილ სისტემისთვის
+```bash
+php artisan queue:work
+```
+
+10. Set proper permissions (if on Linux/Mac) / უფლებების მინიჭება (Linux/Mac სისტემებზე)
 ```bash
 chmod -R 777 storage
 chmod -R 777 bootstrap/cache
