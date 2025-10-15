@@ -35,7 +35,7 @@ class AuthController extends Controller
             "password_confirmation" => "required"
         ],[
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
-            'phone.regex' => 'Phone number must be in Georgian format: +995XXXXXXXXX',
+            'phone.regex' => 'Phone number must be in Georgian format: +995XXXXXXXXX.',
             'phone.unique' => 'This phone number is already registered.'
         ]
     );

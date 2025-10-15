@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title>Login</title>
+    <title>Forgot Password</title>
 </head>
 <body>
 
@@ -16,73 +16,41 @@
           <div class="card-body p-md-5">
             <div class="row justify-content-center">
 
-            <div class="col-md-10 col-lg-6 col-xl-6 d-flex align-items-center order-2 order-lg-1">
-
+              <div class="col-md-10 col-lg-6 col-xl-6 d-flex align-items-center order-2 order-lg-1">
                 <img src="https://www.dochipo.com/wp-content/uploads/2021/09/pablo-tutorials.png"
                   class="img-fluid" alt="Sample image">
+              </div>
 
-            </div>
-
-            <div class="col-md-10 col-lg-6 col-xl-6 order-1 order-lg-2">
-
+              <div class="col-md-10 col-lg-6 col-xl-6 order-1 order-lg-2">
                 <div class="text-center mb-4 mx-1 mx-md-4 mt-4">
                     <h1 class="fw-bold mb-0" style="font-size: 2.8rem;">
-                        <span class="text-primary">welcome</span>
-                        <span class="text-dark">back!</span>
+                        <span class="text-primary">reset</span>
+                        <span class="text-dark">password</span>
                     </h1>
                 </div>
 
-                <form class="mx-1 mx-md-4" action="{{ route('login.post') }}" method="POST">
-                @csrf
+                @if (session('status'))
+                    <div class="alert alert-success mx-1 mx-md-4">
+                        {{ session('status') }}
+                    </div>
+                @endif
 
-                @session("error")
-                    <div class="alert alert-danger">{{ $value }}</div>
-                @endsession
+                <form class="mx-1 mx-md-4" action="{{ route('password.email') }}" method="POST">
+                    @csrf
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                            <input type="text" 
+                            <input type="email" 
                                 id="email" 
                                 name="email" 
                                 class="form-control form-control-lg py-3" 
-                                placeholder="Email or Phone Number"
+                                placeholder="Enter your email address"
                                 style="font-size: 1rem;"/>
-                            @error("email")
-                            <span class="text-danger">{{ str_replace('email', 'email/phone', $message) }}</span> 
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span> 
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                            <input type="password" 
-                                id="password" 
-                                name="password" 
-                                class="form-control form-control-lg py-3" 
-                                placeholder="Password"
-                                style="font-size: 1rem;"/>
-                            @error("password")
-                            <span class="text-danger">{{ $message }}</span> 
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check ms-4">
-                            <input class="form-check-input" 
-                                type="checkbox" 
-                                name="remember" 
-                                id="remember" 
-                                checked>
-                            <label class="form-check-label text-secondary" for="remember">
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="{{ route('password.request') }}" class="text-primary text-decoration-none">
-                            Forgot Password?
-                        </a>
                     </div>
 
                     <div class="d-flex flex-column align-items-center gap-3 my-4">
@@ -93,8 +61,8 @@
                                     border-radius: 10px;
                                     transition: all 0.3s ease;">
                             <span class="d-flex align-items-center justify-content-center">
-                                <i class="fas fa-sign-in-alt me-2"></i>
-                                Log in
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Send Reset Link
                             </span>
                         </button>
                     </div>
@@ -111,12 +79,11 @@
                     </style>
 
                     <div class="text-center mb-3">
-                        <span class="text-muted">Don't have an account? 
-                            <a href="{{ route('register') }}" class="text-primary text-decoration-none">Register here!</a>
+                        <span class="text-muted">Remember your password? 
+                            <a href="{{ route('login') }}" class="text-primary text-decoration-none">Login here!</a>
                         </span>
                     </div>
                 </form>
-
               </div>
             </div>
           </div>
