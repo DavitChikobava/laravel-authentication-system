@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use App\Jobs\SendPasswordResetEmail;
 
 class PasswordResetController extends Controller
 {
@@ -45,20 +46,9 @@ class PasswordResetController extends Controller
 
             Log::info("Token created successfully for: " . $email);
 
-            try {
-                Mail::send('emails.reset-password', ['token' => $token], function($message) use($email) {
-                    $message->to($email)
-                        ->subject('Reset Your Password');
-                });
-            } catch (\Swift_TransportException $e) {
-                Log::error("Swift Transport Error: " . $e->getMessage());
-                throw $e;
-            } catch (\Exception $e) {
-                Log::error("Mail Send Error: " . $e->getMessage());
-                throw $e;
-            }
+            SendPasswordResetEmail::dispatch($email, $token);
 
-            Log::info("Reset email sent successfully to: " . $email);
+            Log::info("Reset email job dispatched successfully for: " . $email);
 
             return back()->with('status', 'Password reset link has been sent to your email!');
 
