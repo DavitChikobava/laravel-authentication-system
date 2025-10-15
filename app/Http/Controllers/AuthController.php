@@ -99,7 +99,12 @@ class AuthController extends Controller
                 'required',
                 'confirmed',
                 'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (Hash::check($value, auth()->user()->password)) {
+                        $fail('Your new password must be different from your current password.');
+                    }
+                },
             ],
         ], [
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
@@ -131,7 +136,7 @@ class AuthController extends Controller
             "password"=> "required"
         ]);
 
-        $remember = $request->has('remember'); // Get remember me value
+        $remember = $request->has('remember');
         $loginField = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
         
         $credentials = [
@@ -139,7 +144,7 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if(Auth::attempt($credentials, $remember)) // Pass remember value to attempt method
+        if(Auth::attempt($credentials, $remember))
         {
             $request->session()->regenerate();
             return redirect()->route("dashboard")->with("success", "User Logged in Successfully!");
@@ -151,7 +156,7 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if(Auth::attempt($alternativeCredentials, $remember)) // Pass remember value here too
+        if(Auth::attempt($alternativeCredentials, $remember))
         {
             $request->session()->regenerate();
             return redirect()->route("dashboard")->with("success", "User Logged in Successfully!");
@@ -227,14 +232,12 @@ class AuthController extends Controller
     public function forcePasswordChange(Request $request)
     {
         $request->validate([
-            'current_password' => 'required',
             'password' => [
                 'required',
                 'confirmed',
                 'min:8',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-                function ($attribute, $value, $fail) use ($request) {
-                    // Check if new password matches the current password
+                function ($attribute, $value, $fail) {
                     if (Hash::check($value, auth()->user()->password)) {
                         $fail('Your new password must be different from your current password.');
                     }
@@ -246,20 +249,13 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Current password is incorrect']);
-        }
-
         $user->update([
             'password' => Hash::make($request->password),
             'must_change_password' => false
         ]);
 
-        auth()->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login')
-            ->with('success', 'Password changed successfully. Please log in with your new password.');
+        // No need to logout, just redirect to dashboard
+        return redirect()->route('dashboard')
+            ->with('success', 'Password changed successfully!');
     }
 }

@@ -71,7 +71,19 @@ class PasswordResetController extends Controller
                 'required',
                 'confirmed',
                 'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                function ($attribute, $value, $fail) use ($request) {
+                    $tokenData = DB::table('password_reset_tokens')
+                        ->where('token', $request->token)
+                        ->first();
+                    
+                    if ($tokenData) {
+                        $user = User::where('email', $tokenData->email)->first();
+                        if ($user && Hash::check($value, $user->password)) {
+                            $fail('Your new password must be different from your current password.');
+                        }
+                    }
+                },
             ],
         ], [
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
