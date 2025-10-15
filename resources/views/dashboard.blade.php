@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-Current Date and Time (UTC): 2025-10-15 16:13:05
-Current User's Login: DavitChikobava
--->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,7 +61,7 @@ Current User's Login: DavitChikobava
                         </span>
                     </li>
                     <li class="nav-item mb-2 mb-lg-0 d-flex justify-content-end">
-                        <a href="{{ route('register') }}" 
+                        <a href="{{ route('register.new') }}" 
                         class="nav-link border border-primary text-primary rounded px-3 ms-2 hover-primary d-inline-block">
                             Register User
                         </a>

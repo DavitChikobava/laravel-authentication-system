@@ -176,4 +176,90 @@ class AuthController extends Controller
 
         return redirect()->route("login");
     }
+
+    public function newUserRegister()
+    {
+        return view('auth.register-new-user');
+    }
+
+    public function newUserRegisterPost(Request $request)
+    {
+        $request->validate([
+            "name" => "required",
+            "surname" => "required",
+            "phone" => [
+                'required',
+                'unique:users,phone',
+                'regex:/^\+995[5-9][0-9]{8}$/'
+            ],
+            "email" => "required|email|unique:users",
+            "password" => [
+                'required',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ]
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+            'phone.regex' => 'Phone number must be in Georgian format: +995XXXXXXXXX.',
+            'phone.unique' => 'This phone number is already registered.'
+        ]);
+
+        $user = User::create([
+            "name" => $request->name,
+            "surname" => $request->surname,
+            "phone" => $request->phone,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
+            "must_change_password" => true
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'New user registered successfully!');
+    }
+
+    public function showForcePasswordChange()
+    {
+        if (!auth()->user()->must_change_password) {
+            return redirect()->route('dashboard');
+        }
+        return view('auth.force-password-change');
+    }
+
+    public function forcePasswordChange(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Check if new password matches the current password
+                    if (Hash::check($value, auth()->user()->password)) {
+                        $fail('Your new password must be different from your current password.');
+                    }
+                },
+            ],
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+        ]);
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'must_change_password' => false
+        ]);
+
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')
+            ->with('success', 'Password changed successfully. Please log in with your new password.');
+    }
 }
